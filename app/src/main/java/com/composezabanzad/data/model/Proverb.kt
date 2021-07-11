@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Proverb(
     @PrimaryKey
     val id: Int,
-    val step: Int,
+    val level: Int,
     val description: String,
     val mean: String,
     val hardness: Int
