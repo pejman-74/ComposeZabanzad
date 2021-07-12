@@ -25,5 +25,5 @@ abstract class BaseViewModel(
     }
 
     fun playBackgroundMusic(@RawRes resId: Int) = doInIO { backgroundMusicPlayer.play(resId) }
-    fun stop() = doInIO { backgroundMusicPlayer.stop() }
+    fun stopBackgroundMusic() = doInIO { backgroundMusicPlayer.stop() }
 }
