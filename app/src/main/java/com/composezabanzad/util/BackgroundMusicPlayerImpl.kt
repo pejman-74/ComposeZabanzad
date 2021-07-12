@@ -4,8 +4,6 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.annotation.RawRes
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class BackgroundMusicPlayerImpl(@ApplicationContext private val context: Context) :
@@ -13,7 +11,7 @@ class BackgroundMusicPlayerImpl(@ApplicationContext private val context: Context
 
     private var mediaPlayer: MediaPlayer? = null
 
-    override suspend fun play(@RawRes resId: Int): Unit = withContext(Dispatchers.IO) {
+    override suspend fun play(@RawRes resId: Int) {
         stop()
         runCatching {
             mediaPlayer = MediaPlayer.create(context, resId)
