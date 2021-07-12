@@ -49,9 +49,9 @@ class AppDatastore(
             preferences[CURRENT_STEP] ?: 0
         }
 
-    suspend fun setCurrentStep(level: Int) {
+    suspend fun setCurrentStep(step: Int) {
         appDatastore.edit { preferences ->
-            preferences[CURRENT_STEP] = level
+            preferences[CURRENT_STEP] = step
         }
     }
 
@@ -72,5 +72,7 @@ class AppDatastore(
     }
 
 
-    suspend fun clearDataStore() = appDatastore.edit { it.clear() }
+    suspend fun clearDataStore() {
+        appDatastore.edit { it.clear() }
+    }
 }
