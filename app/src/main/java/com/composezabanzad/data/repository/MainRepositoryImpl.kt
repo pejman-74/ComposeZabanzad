@@ -4,11 +4,8 @@ import com.composezabanzad.data.database.AppDatabase
 import com.composezabanzad.data.datastore.AppDatastore
 import com.composezabanzad.data.model.Proverb
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class MainRepositoryImpl @Inject constructor(
+class MainRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val appDatastore: AppDatastore
 ) : MainRepository {
