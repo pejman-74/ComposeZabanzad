@@ -10,6 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
+import javax.inject.Named
 import javax.inject.Singleton
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -19,10 +20,22 @@ object CoroutineModuleTest {
 
     @Provides
     @Singleton
-    fun provideIoDispatcher(): CoroutineDispatcher = TestCoroutineDispatcher()
+    fun provideTestDispatcher(): TestCoroutineDispatcher = TestCoroutineDispatcher()
 
     @Provides
     @Singleton
-    fun provideCoroutineScope(testCoroutineDispatcher: CoroutineDispatcher): CoroutineScope =
+    @Named("io")
+    fun provideIoDispatcher(testCoroutineDispatcher: TestCoroutineDispatcher): CoroutineDispatcher =
+        testCoroutineDispatcher
+
+    @Provides
+    @Singleton
+    @Named("main")
+    fun provideMainDispatcher(testCoroutineDispatcher: TestCoroutineDispatcher): CoroutineDispatcher =
+        testCoroutineDispatcher
+
+    @Provides
+    @Singleton
+    fun provideCoroutineScope(@Named("io") testCoroutineDispatcher: CoroutineDispatcher): CoroutineScope =
         TestCoroutineScope(testCoroutineDispatcher + SupervisorJob())
 }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -16,10 +17,16 @@ object CoroutineModule {
 
     @Provides
     @Singleton
+    @Named("io")
     fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
     @Singleton
-    fun provideCoroutineScope(ioDispatcher: CoroutineDispatcher): CoroutineScope =
+    @Named("main")
+    fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+
+    @Provides
+    @Singleton
+    fun provideCoroutineScope(@Named("io") ioDispatcher: CoroutineDispatcher): CoroutineScope =
         CoroutineScope(ioDispatcher + SupervisorJob())
 }
