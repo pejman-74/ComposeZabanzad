@@ -10,12 +10,12 @@ class MainRepositoryImpl(
     private val appDatastore: AppDatastore
 ) : MainRepository {
 
-    override suspend fun getProverb(id: Int): Proverb {
+    override suspend fun getProverb(id: Int): Proverb? {
         return appDatabase.proverbDao().getProverb(id)
     }
 
-    override suspend fun getAllProverbs(): List<Proverb> {
-        return appDatabase.proverbDao().getAllProverbs()
+    override suspend fun getProverbsCountByLevel(level: Int): Int {
+        return appDatabase.proverbDao().getProverbsCountByLevel(level)
     }
 
     override fun currentLevel(): Flow<Int> {

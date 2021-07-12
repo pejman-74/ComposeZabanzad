@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
 
-    suspend fun getProverb(id: Int): Proverb
+    suspend fun getProverb(id: Int): Proverb?
 
-    suspend fun getAllProverbs(): List<Proverb>
+    suspend fun getProverbsCountByLevel(level: Int): Int
 
     fun currentLevel(): Flow<Int>
 

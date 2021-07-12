@@ -14,8 +14,8 @@ interface ProverbDao {
     suspend fun insertProverb(proverb: Proverb)
 
     @Query("SELECT * FROM PROVERB WHERE id=:id")
-    suspend fun getProverb(id: Int): Proverb
+    suspend fun getProverb(id: Int): Proverb?
 
-    @Query("SELECT * FROM PROVERB")
-    suspend fun getAllProverbs(): List<Proverb>
+    @Query("SELECT COUNT(DISTINCT description) FROM PROVERB WHERE level=:level")
+    suspend fun getProverbsCountByLevel(level: Int): Int
 }
