@@ -19,7 +19,7 @@ class BackgroundMusicPlayerImpl(@ApplicationContext private val context: Context
         }
     }
 
-    override fun stop() {
+    override suspend fun stop() {
         mediaPlayer?.let { mediaPlayer ->
             runCatching {
                 mediaPlayer.stop()

@@ -10,7 +10,7 @@ class FakeBackgroundMusicPlayerImpl : BackgroundMusicPlayer {
         isPlaying = true
     }
 
-    override fun stop() {
+    override suspend fun stop() {
         isPlaying = false
     }
 }
