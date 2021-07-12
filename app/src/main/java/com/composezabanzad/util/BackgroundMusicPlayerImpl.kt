@@ -15,6 +15,7 @@ class BackgroundMusicPlayerImpl(@ApplicationContext private val context: Context
         stop()
         runCatching {
             mediaPlayer = MediaPlayer.create(context, resId)
+            mediaPlayer?.isLooping = true
             mediaPlayer?.start()
         }
     }
