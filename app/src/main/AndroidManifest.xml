@@ -3,6 +3,7 @@
     package="com.composezabanzad">
 
     <application
+        android:name=".ZabanzadApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
