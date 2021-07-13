@@ -1,6 +1,7 @@
 package com.composezabanzad.data.datastore
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -71,7 +72,11 @@ class AppDatastore(
         }
     }
 
+    suspend fun clearSolvedWords() {
+        appDatastore.edit { preferences -> preferences[SOLVED_WORDS] = "" }
+    }
 
+    @VisibleForTesting
     suspend fun clearDataStore() {
         appDatastore.edit { it.clear() }
     }

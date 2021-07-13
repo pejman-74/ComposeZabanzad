@@ -21,5 +21,5 @@ interface MainRepository {
 
     suspend fun addSolvedWord(word: String)
 
-    suspend fun clearDataStore()
+    suspend fun clearSolvedWords()
 }

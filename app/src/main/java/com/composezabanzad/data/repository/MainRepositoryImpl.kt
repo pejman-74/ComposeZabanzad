@@ -42,8 +42,8 @@ class MainRepositoryImpl(
         appDatastore.addSolvedWord(word)
     }
 
-    override suspend fun clearDataStore() {
-        appDatastore.clearDataStore()
+    override suspend fun clearSolvedWords() {
+        appDatastore.clearSolvedWords()
     }
 
 }
