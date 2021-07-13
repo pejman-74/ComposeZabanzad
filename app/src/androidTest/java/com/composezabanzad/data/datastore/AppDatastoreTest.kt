@@ -103,5 +103,17 @@ class AppDatastoreTest {
         }
         assertThat(appDatastore.lastStepSolvedWords.first()).isEqualTo(solvedWord)
     }
-
+    /**
+     * when clearSolvedWords called should clear all solved list.
+     * */
+    @Test
+    fun test7() = runBlockingTest {
+        val solvedWord = listOf("chicken", "meat", "egg")
+        solvedWord.forEach {
+            appDatastore.addSolvedWord(it)
+        }
+        assertThat(appDatastore.lastStepSolvedWords.first()).isEqualTo(solvedWord)
+        appDatastore.clearSolvedWords()
+        assertThat(appDatastore.lastStepSolvedWords.first()).isEmpty()
+    }
 }
