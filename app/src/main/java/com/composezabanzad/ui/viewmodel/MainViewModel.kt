@@ -68,10 +68,10 @@ class MainViewModel @Inject constructor(
         }
 
     fun playLastTack() = doInMain {
-        backgroundMusicPlayer.playLastTrack()
+        doInIO { backgroundMusicPlayer.playLastTrack() }
     }
 
-    fun stopBackgroundMusic() = doInMain {
+    fun stopBackgroundMusic() {
         backgroundMusicPlayer.stop()
     }
 

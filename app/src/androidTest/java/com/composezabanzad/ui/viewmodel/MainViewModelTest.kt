@@ -6,7 +6,6 @@ import com.composezabanzad.data.datastore.AppDatastore
 import com.composezabanzad.data.model.Proverb
 import com.composezabanzad.data.repository.MainRepository
 import com.composezabanzad.util.BackgroundMusicPlayer
-import com.composezabanzad.util.FakeBackgroundMusicPlayerImpl
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -85,7 +84,7 @@ class MainViewModelTest {
     @Test
     fun test1() = runBlockingTest {
         mainViewModel.playBackgroundMusic(1)
-        val isPlaying = (backgroundMusicPlayer as FakeBackgroundMusicPlayerImpl).isPlaying
+        val isPlaying = mainViewModel.isPlayingBackgroundMusic.first()
         assertThat(isPlaying).isTrue()
     }
 
@@ -96,7 +95,7 @@ class MainViewModelTest {
     fun test2() = runBlockingTest {
         mainViewModel.playBackgroundMusic(1)
         mainViewModel.stopBackgroundMusic()
-        val isPlaying = (backgroundMusicPlayer as FakeBackgroundMusicPlayerImpl).isPlaying
+        val isPlaying = mainViewModel.isPlayingBackgroundMusic.first()
         assertThat(isPlaying).isFalse()
     }
 
@@ -199,5 +198,33 @@ class MainViewModelTest {
         assertThat(mainViewModel.lastStepSolvedWords.first()).isEqualTo(listOf("meet"))
         mainViewModel.clearSolvedWords()
         assertThat(mainViewModel.lastStepSolvedWords.first()).isEmpty()
+    }
+
+    /**
+     * when playLastTack called should background music play latest track.
+     * */
+    @Test
+    fun test14() = runBlockingTest {
+        mainViewModel.playBackgroundMusic(1)
+        mainViewModel.stopBackgroundMusic()
+        mainViewModel.playLastTack()
+        val isPlaying = mainViewModel.isPlayingBackgroundMusic.first()
+        assertThat(isPlaying).isTrue()
+    }
+
+    /**
+     * when isMuteAudio called should return false by default.
+     * */
+    @Test
+    fun test15() = runBlockingTest {
+        assertThat(mainViewModel.isMuteAudio.first()).isFalse()
+    }
+    /**
+     * when setIsMuteAudio called should mute audio.
+     * */
+    @Test
+    fun test16() = runBlockingTest {
+        mainViewModel.setIsMuteAudio(true)
+        assertThat(mainViewModel.isMuteAudio.first()).isTrue()
     }
 }
