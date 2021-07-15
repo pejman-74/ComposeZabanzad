@@ -22,4 +22,8 @@ interface MainRepository {
     suspend fun addSolvedWord(word: String)
 
     suspend fun clearSolvedWords()
+
+    fun isMuteAudio(): Flow<Boolean>
+
+    suspend fun setIsMuteAudio(isMute: Boolean)
 }

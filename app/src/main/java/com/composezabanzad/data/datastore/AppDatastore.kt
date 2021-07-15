@@ -3,10 +3,7 @@ package com.composezabanzad.data.datastore
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +28,18 @@ class AppDatastore(
         private val CURRENT_LEVEL = intPreferencesKey("current_level")
         private val CURRENT_STEP = intPreferencesKey("current_step")
         private val SOLVED_WORDS = stringPreferencesKey("solved_words")
+        private val IS_MUTE_AUDIO = booleanPreferencesKey("is_mute_audio")
+    }
 
+    val isMuteAudio: Flow<Boolean> = appDatastore.data
+        .map { preferences ->
+            preferences[IS_MUTE_AUDIO] ?: false
+        }
+
+    suspend fun setIsMuteAudio(isMute: Boolean) {
+        appDatastore.edit { preferences ->
+            preferences[IS_MUTE_AUDIO] = isMute
+        }
     }
 
     val currentLevel: Flow<Int> = appDatastore.data

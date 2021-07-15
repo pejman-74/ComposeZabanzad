@@ -46,5 +46,13 @@ class MainRepositoryImpl(
         appDatastore.clearSolvedWords()
     }
 
+    override fun isMuteAudio(): Flow<Boolean> {
+        return appDatastore.isMuteAudio
+    }
+
+    override suspend fun setIsMuteAudio(isMute: Boolean) {
+        appDatastore.setIsMuteAudio(isMute)
+    }
+
 }
 
