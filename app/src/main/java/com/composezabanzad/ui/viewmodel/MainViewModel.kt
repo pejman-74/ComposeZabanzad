@@ -1,14 +1,20 @@
 package com.composezabanzad.ui.viewmodel
 
+import androidx.annotation.RawRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.composezabanzad.data.model.Proverb
 import com.composezabanzad.data.repository.MainRepository
 import com.composezabanzad.util.BackgroundMusicPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -17,8 +23,8 @@ class MainViewModel @Inject constructor(
     @Named("main") private val mainDispatcher: CoroutineDispatcher,
     @Named("io") private val ioDispatcher: CoroutineDispatcher,
     private val mainRepository: MainRepository,
-    backgroundMusicPlayer: BackgroundMusicPlayer
-) : BaseViewModel(mainDispatcher, ioDispatcher, backgroundMusicPlayer) {
+    private val backgroundMusicPlayer: BackgroundMusicPlayer
+) : BaseViewModel(mainDispatcher, ioDispatcher) {
 
     private val _proverb: MutableState<Proverb?> = mutableStateOf(null)
     val proverb: State<Proverb?> = _proverb
@@ -47,5 +53,50 @@ class MainViewModel @Inject constructor(
     suspend fun addSolvedWord(word: String) = doInMain { mainRepository.addSolvedWord(word) }
 
     suspend fun clearSolvedWords() = doInMain { mainRepository.clearSolvedWords() }
+
+    val isMuteAudio: Flow<Boolean> = mainRepository.isMuteAudio()
+
+    val isPlayingBackgroundMusic = backgroundMusicPlayer.isPlaying()
+
+    fun setIsMuteAudio(isMute: Boolean) = doInMain {
+        mainRepository.setIsMuteAudio(isMute)
+    }
+
+    fun playBackgroundMusic(@RawRes resId: Int) =
+        doInMain {
+            doInIO { backgroundMusicPlayer.play(resId) }
+        }
+
+    fun playLastTack() = doInMain {
+        backgroundMusicPlayer.playLastTrack()
+    }
+
+    fun stopBackgroundMusic() = doInMain {
+        backgroundMusicPlayer.stop()
+    }
+
+    private val appLifecycleObserver = object : LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_START)
+        fun onMoveToForeground() {
+            doInMain {
+                if (!isMuteAudio.first())
+                    playLastTack()
+            }
+        }
+
+        @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+        fun onMoveToBackground() {
+            stopBackgroundMusic()
+        }
+    }
+
+    init {
+        ProcessLifecycleOwner.get().lifecycle.addObserver(appLifecycleObserver)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        ProcessLifecycleOwner.get().lifecycle.removeObserver(appLifecycleObserver)
+    }
 
 }
