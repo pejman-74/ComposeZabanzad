@@ -4,8 +4,8 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.annotation.RawRes
 import com.composezabanzad.R
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import javax.annotation.concurrent.ThreadSafe
 
 @ThreadSafe
@@ -54,7 +54,7 @@ class BackgroundMusicPlayerImpl(private val context: Context) : BackgroundMusicP
         play(resId)
     }
 
-    override fun isPlaying(): StateFlow<Boolean> = isPlaying
+    override fun isPlaying(): Flow<Boolean> = isPlaying
 
 }
 
